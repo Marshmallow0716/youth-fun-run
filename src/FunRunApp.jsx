@@ -503,3 +503,10 @@ function Faq({ q, a }) {
     </div>
   );
 }
+
+// ----------------------------
+// To update and push online, type niyo lang to sa terminal :))
+//git add .
+//git commit -m "Update hero section text"
+//git push origin main
+// ----------------------------
