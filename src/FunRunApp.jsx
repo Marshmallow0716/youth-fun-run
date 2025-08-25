@@ -423,7 +423,8 @@ async function handleRegister(e) {
         <img src="/icons/tiktok.svg" alt="TikTok" className="w-6 h-6"/>
       </a>
     </div>
-    © {new Date().getFullYear()} Marshnandez. All Rights Reserved.<br />{EVENT_TITLE} | by Feast Youth - Rizal District.
+    {EVENT_TITLE} | by Feast Youth - Rizal District.<br />
+    © {new Date().getFullYear()} Marshnandez. All Rights Reserved.
   </div>
 </footer>
 
