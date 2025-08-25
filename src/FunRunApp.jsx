@@ -374,7 +374,7 @@ async function handleRegister(e) {
               <Faq q="Pwede pa mag dagdag ng tanong" a="OKAYYYY" />
               <Faq q="Kumain ka na?" a="hahahaha" />
               <Faq q="La na ko maisip na tanong" a="I surrender." />
-              <Faq q="Gcash ko talaga yan ha :>" a="-marshall" />
+              <Faq q="Gcash ko talaga yan ha :>" a="wag kalimutan palitan haha -marshall" />
             </div>
           </aside>
         </main>
