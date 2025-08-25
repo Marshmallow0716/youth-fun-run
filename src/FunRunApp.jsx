@@ -372,7 +372,7 @@ async function handleRegister(e) {
               <Faq q="Is there a registration fee?" a="Registration is Php 500. Donations are welcome through church channels. You may register through this website." />
               <Faq q="What should I bring?" a="Comfortable running shoes, water bottle, and your phone with the QR code for fast check-in." />
               <Faq q="Pwede pa mag dagdag ng tanong" a="OKAYYYY" />
-              <Faq q="Kumain ka na?" a="hahahaha" />
+              <Faq q="Kumain na ba'ko?" a="hahahaha" />
               <Faq q="La na ko maisip na tanong" a="I surrender." />
               <Faq q="Gcash ko talaga yan ha :>" a="wag kalimutan palitan haha -marshall" />
             </div>
