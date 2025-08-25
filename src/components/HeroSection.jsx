@@ -33,7 +33,7 @@ export default function HeroSection() {
     <section className="relative bg-black text-white h-[70vh] sm:h-[80vh] flex flex-col justify-center items-center text-center overflow-hidden">
       {/* Background Video */}
       <video
-        className="absolute inset-0 w-full h-full object-cover opacity-60"
+        className="absolute inset-0 w-full h-full object-cover opacity-30"
         src="/videos/hero-video.mp4"
         autoPlay
         loop
