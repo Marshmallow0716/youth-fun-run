@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 
 export default function HeroSection() {
-  // Memoize event date so it doesn't recreate on every render
   const eventDate = useMemo(() => new Date("2025-12-25T06:00:00"), []);
 
   const calculateTimeLeft = useCallback(() => {
@@ -31,7 +30,7 @@ export default function HeroSection() {
   }, [calculateTimeLeft]);
 
   return (
-    <section className="relative bg-black text-white h-[70vh] flex flex-col justify-center items-center text-center overflow-hidden">
+    <section className="relative bg-black text-white h-[70vh] sm:h-[80vh] flex flex-col justify-center items-center text-center overflow-hidden">
       {/* Background Video */}
       <video
         className="absolute inset-0 w-full h-full object-cover opacity-60"
@@ -43,13 +42,14 @@ export default function HeroSection() {
       />
 
       {/* Overlay Content */}
-      <div className="relative z-10 max-w-full px-4">
-        <h1 className="font-bold mb-4 whitespace-nowrap text-[clamp(2.5rem,6vw,5rem)]">
+      <div className="relative z-10 max-w-3xl px-4">
+        <h1 className="font-bold mb-4 text-[clamp(2rem,6vw,4.5rem)] leading-tight">
           FUN RUN: Takbo Para Sa Youth
         </h1>
 
-        <p className="mb-6 whitespace-nowrap text-[clamp(1.25rem,2.5vw,1rem)]">
-          Lace up for a cause. A family-friendly event to raise support for youth programs, camps, and outreach. Walk, jog, or run — everyone’s welcome!
+        <p className="mb-6 text-[clamp(1rem,2.5vw,1.25rem)] leading-snug">
+          Lace up for a cause. A family-friendly event to raise support for youth
+          programs, camps, and outreach. Walk, jog, or run — everyone’s welcome!
         </p>
         <br></br>
         {/* Countdown Timer */}
