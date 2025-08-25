@@ -49,7 +49,7 @@ export default function HeroSection() {
 
         <p className="mb-6 text-[clamp(1rem,2.5vw,1.25rem)] leading-snug">
           Lace up for a cause. A family-friendly event to raise support for youth
-          programs, camps, and outreach. Walk, jog, or run — everyone’s welcome!
+          programs, camps, and outreach. Walk, jog, or run~ everyone’s welcome!
         </p>
         <br></br>
         {/* Countdown Timer */}
