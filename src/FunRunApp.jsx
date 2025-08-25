@@ -385,7 +385,7 @@ async function handleRegister(e) {
         <section className="max-w-xl mx-auto px-4 pb-20">
           <div className="bg-white border rounded-2xl shadow p-8 text-center">
             <h3 className="text-2xl font-bold">Your Registration QR</h3>
-            <p className="text-gray-600 mt-1">Save this image or keep this page open for event check-in.</p>
+            <p className="text-gray-600 mt-1">We're verifying your proof of payment.<br></br>Save this image or keep this page open for event check-in.</p>
 
             <div className="mt-6 flex justify-center">
               {qrDataUrl ? (
