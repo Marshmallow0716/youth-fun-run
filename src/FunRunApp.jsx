@@ -23,7 +23,7 @@ const EVENT_TIMEZONE = "Rizal District";         // For display
 const FEEDBACK_FORM_URL = "https://forms.gle/PNAV985iPYEtvG5n6";
 
 // Admin PIN (client-side only)
-const ADMIN_PIN = "1234";
+const ADMIN_PIN = "kumainkanaba?123";
 
 // Firebase Web App Config~ replace these with your Firebase project values
 const FIREBASE_CONFIG = {
