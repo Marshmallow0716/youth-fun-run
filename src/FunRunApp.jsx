@@ -248,16 +248,25 @@ async function handleRegister(e) {
     const regRef = doc(db, "registrations", `${Date.now()}-${form.fullName}`);
     await setDoc(regRef, payload);
 
-    // 2️⃣ Send to Google Sheets
-    const SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyMWYgEmAqh-0old7cn4hfqEJX2G7jJGI7Z_SDu9sk6Xz49CL1TaM7lZMsLrN_JpjWJ/exec"; // Update this
+// 2️⃣ Send to Google Sheets (with response logging)
+try {
+  const response = await fetch("https://script.google.com/macros/s/AKfycbzSUf89GNaBorA9fIES7xwK66KSXQUs7qFsFNGK9eNz2Kp64l9f6eG2p8aD_N27q9Di/exec", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
 
-    // Fetch request
-    fetch(SHEET_WEBAPP_URL, {
-      method: "POST",
-      mode: "no-cors", // keeps it simple, Apps Script doesn't need response
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    }).catch((err) => console.warn("Failed to send to Google Sheet", err));
+  // Try to read JSON response
+  const result = await response.json();
+  console.log("Google Sheets response:", result);
+
+  if (result.status !== "success") {
+    console.warn("Google Sheets error:", result.message);
+  }
+} catch (err) {
+  console.error("Failed to send to Google Sheet", err);
+}
+
 
     // 3️⃣ Generate QR code locally
     const dataUrl = await QRCode.toDataURL(JSON.stringify(payload), { margin: 1, width: 256 });
@@ -269,6 +278,8 @@ async function handleRegister(e) {
     alert("Failed to register and generate QR code.");
   }
 }
+
+
 
 
 
