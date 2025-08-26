@@ -125,6 +125,8 @@ export default function FunRunApp() {
     referenceNumber: "",
   });
   const [qrDataUrl, setQrDataUrl] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false); // <-- new state for button loading
+
 
   // ----------------------------
   // Firestore live subscription for fundraising
@@ -216,21 +218,24 @@ export default function FunRunApp() {
 async function handleRegister(e) {
   e.preventDefault();
 
-  if (!db) {
-    alert("Firebase not initialized. Try refreshing the page.");
-    return;
-  }
-
-  // Required fields check
-  const requiredFields = ["fullName", "email", "age", "ministry", "referenceNumber"];
-  for (const field of requiredFields) {
-    if (!form[field]) {
-      alert(`Please fill in ${field.replace(/([A-Z])/g, " $1")}.`);
-      return;
-    }
-  }
+  if (isGenerating) return; // Prevent double-clicks
+  setIsGenerating(true);    // Start loading
 
   try {
+    if (!db) {
+      alert("Firebase not initialized. Try refreshing the page.");
+      return;
+    }
+
+    // Required fields check
+    const requiredFields = ["fullName", "email", "age", "ministry", "referenceNumber"];
+    for (const field of requiredFields) {
+      if (!form[field]) {
+        alert(`Please fill in ${field.replace(/([A-Z])/g, " $1")}.`);
+        return;
+      }
+    }
+
     const payload = {
       fullName: form.fullName,
       email: form.email,
@@ -248,32 +253,23 @@ async function handleRegister(e) {
     const regRef = doc(db, "registrations", `${Date.now()}-${form.fullName}`);
     await setDoc(regRef, payload);
 
-// 2️⃣ Send to Google Sheets (form-encoded to bypass CORS)
-try {
-  const formBody = new URLSearchParams(payload).toString();
-
-  const response = await fetch(
-    "https://script.google.com/macros/s/AKfycbyOvtuW-fYQtB7DyHVhx62Og5NyGTnvG2in9cPQuHlvGM1MtwyN85UoZlMZNwJs7PK0/exec",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-      },
-      body: formBody,
+    // 2️⃣ Send to Google Sheets
+    try {
+      const formBody = new URLSearchParams(payload).toString();
+      const response = await fetch(
+        "https://script.google.com/macros/s/AKfycbyOvtuW-fYQtB7DyHVhx62Og5NyGTnvG2in9cPQuHlvGM1MtwyN85UoZlMZNwJs7PK0/exec",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+          body: formBody,
+        }
+      );
+      const result = await response.json();
+      console.log("Google Sheets response:", result);
+      if (result.status !== "success") console.warn("Google Sheets error:", result.message);
+    } catch (err) {
+      console.error("Failed to send to Google Sheet", err);
     }
-  );
-
-  const result = await response.json();
-  console.log("Google Sheets response:", result);
-
-  if (result.status !== "success") {
-    console.warn("Google Sheets error:", result.message);
-  }
-} catch (err) {
-  console.error("Failed to send to Google Sheet", err);
-}
-
-
 
     // 3️⃣ Generate QR code locally
     const dataUrl = await QRCode.toDataURL(JSON.stringify(payload), { margin: 1, width: 256 });
@@ -283,8 +279,11 @@ try {
   } catch (err) {
     console.error(err);
     alert("Failed to register and generate QR code.");
+  } finally {
+    setIsGenerating(false); // <-- stop loading regardless of success or error
   }
 }
+
 
 
 
@@ -397,8 +396,13 @@ try {
                     <p>+639696392759 (GCash / Maya)</p>
                   </div>
                 </div>
-
-                <button type="submit" className="mt-2 inline-flex items-center justify-center rounded-xl bg-red-600 px-5 py-3 font-semibold text-white shadow hover:bg-red-700">Generate my QR code</button>
+                  <button
+                    type="submit"
+                    className="mt-2 inline-flex items-center justify-center rounded-xl bg-red-600 px-5 py-3 font-semibold text-white shadow hover:bg-red-700 disabled:opacity-60"
+                    disabled={isGenerating}
+                  >
+                    {isGenerating ? "Generating QR..." : "Generate my QR code"}
+                  </button>
               </form>
               </section>
             </div>
