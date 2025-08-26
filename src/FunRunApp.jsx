@@ -253,7 +253,7 @@ try {
   const formBody = new URLSearchParams(payload).toString();
 
   const response = await fetch(
-    "https://script.google.com/macros/s/AKfycbzSUf89GNaBorA9fIES7xwK66KSXQUs7qFsFNGK9eNz2Kp64l9f6eG2p8aD_N27q9Di/exec",
+    "https://script.google.com/macros/s/AKfycbyOvtuW-fYQtB7DyHVhx62Og5NyGTnvG2in9cPQuHlvGM1MtwyN85UoZlMZNwJs7PK0/exec",
     {
       method: "POST",
       headers: {
