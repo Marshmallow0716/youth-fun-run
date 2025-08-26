@@ -221,26 +221,46 @@ async function handleRegister(e) {
     return;
   }
 
-  if (!form.fullName || !form.email || !form.age || !form.ministry || !form.referenceNumber) {
-    alert("Please fill in Full Name, Email, Age, Ministry, and Reference Number.");
-    return;
+  // Required fields check
+  const requiredFields = ["fullName", "email", "age", "ministry", "referenceNumber"];
+  for (const field of requiredFields) {
+    if (!form[field]) {
+      alert(`Please fill in ${field.replace(/([A-Z])/g, " $1")}.`);
+      return;
+    }
   }
 
   try {
     const payload = {
-      ...form,
+      fullName: form.fullName,
+      email: form.email,
       age: Number(form.age) || form.age,
+      ministry: form.ministry,
+      phone: form.phone || "",
+      emergencyContact: form.emergencyContact || "",
+      shirtSize: form.shirtSize || "",
+      referenceNumber: form.referenceNumber,
       submittedAt: new Date().toISOString(),
       event: EVENT_TITLE,
     };
 
-    // Save registration to Firestore
+    // 1️⃣ Save to Firestore
     const regRef = doc(db, "registrations", `${Date.now()}-${form.fullName}`);
     await setDoc(regRef, payload);
 
-    // Generate QR code (local)
-    const json = JSON.stringify(payload);
-    const dataUrl = await QRCode.toDataURL(json, { margin: 1, width: 256 });
+    // 2️⃣ Send to Google Sheets
+    const SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyMWYgEmAqh-0old7cn4hfqEJX2G7jJGI7Z_SDu9sk6Xz49CL1TaM7lZMsLrN_JpjWJ/exec"; // Update this
+
+    // Fetch request
+    fetch(SHEET_WEBAPP_URL, {
+      method: "POST",
+      mode: "no-cors", // keeps it simple, Apps Script doesn't need response
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    }).catch((err) => console.warn("Failed to send to Google Sheet", err));
+
+    // 3️⃣ Generate QR code locally
+    const dataUrl = await QRCode.toDataURL(JSON.stringify(payload), { margin: 1, width: 256 });
     setQrDataUrl(dataUrl);
     setView("qr");
 
@@ -251,12 +271,14 @@ async function handleRegister(e) {
 }
 
 
+
+
   // ----------------------------
   // UI Sections
   // ----------------------------
   return (
     //overall bg color and text color of the website
-    <div className="min-h-screen bg-gradient-to-b from-blue-500 to-red-100 text-gray-800">
+    <div className="min-h-screen bg-gradient-to-b from-black to-red-800 text-gray-800">
       {/* Top bar */}
       <header className="sticky top-0 z-20 bg-white/90 backdrop-blur border-b">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
