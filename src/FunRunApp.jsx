@@ -248,15 +248,21 @@ async function handleRegister(e) {
     const regRef = doc(db, "registrations", `${Date.now()}-${form.fullName}`);
     await setDoc(regRef, payload);
 
-// 2️⃣ Send to Google Sheets (with response logging)
+// 2️⃣ Send to Google Sheets (form-encoded to bypass CORS)
 try {
-  const response = await fetch("https://script.google.com/macros/s/AKfycbzSUf89GNaBorA9fIES7xwK66KSXQUs7qFsFNGK9eNz2Kp64l9f6eG2p8aD_N27q9Di/exec", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
+  const formBody = new URLSearchParams(payload).toString();
 
-  // Try to read JSON response
+  const response = await fetch(
+    "https://script.google.com/macros/s/AKfycbzSUf89GNaBorA9fIES7xwK66KSXQUs7qFsFNGK9eNz2Kp64l9f6eG2p8aD_N27q9Di/exec",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+      },
+      body: formBody,
+    }
+  );
+
   const result = await response.json();
   console.log("Google Sheets response:", result);
 
@@ -266,6 +272,7 @@ try {
 } catch (err) {
   console.error("Failed to send to Google Sheet", err);
 }
+
 
 
     // 3️⃣ Generate QR code locally
