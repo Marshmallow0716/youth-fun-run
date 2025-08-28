@@ -30,7 +30,7 @@ export default function HeroSection() {
   }, [calculateTimeLeft]);
 
   return (
-    <section className="relative bg-[#000000] text-white h-[70vh] sm:h-[82vh] flex flex-col justify-center items-center text-center overflow-hidden">
+    <section className="relative -mt-20 bg-[#000000] text-white h-[70vh] sm:h-[90vh] flex flex-col justify-center items-center text-center overflow-hidden">
       {/* Background Video */}
       <video
         className="absolute inset-0 w-full h-full object-cover opacity-30"

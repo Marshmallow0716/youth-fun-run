@@ -287,15 +287,14 @@ async function handleRegister(e) {
   // UI Sections
   // ----------------------------
   return (
-    //overall bg color and text color of the website
-    <div className="min-h-screen bg-gradient-to-b from-[#1E223D] to-[#1B3C6A] text-gray-800">
+<div className="min-h-screen text-gray-800">
       {/* Top bar */}
-      <header className="sticky top-0 z-20 bg-white/90 backdrop-blur border-b">
+      <header className="sticky top-0 z-20 bg-white/10 backdrop-blur-md border-b border-white/20 text-white">
         <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between">
           {/* Logo + Title */}
           <div className="flex items-center gap-3">
             {/* Logo image */}
-            <img src="/youth-home-rizal-logo.png" alt="Youth Fun Run Logo" className="w-14 h-14 rounded-xl" />
+            <img src="/youth-home-rizal-logo-white.png" alt="Youth Fun Run Logo" className="w-16 h-16 rounded-xl" />
             
             <div>
               <h1 className="font-bold text-lg leading-5">{EVENT_TITLE}</h1>
@@ -304,7 +303,7 @@ async function handleRegister(e) {
           </div>
 
           {/* Admin button */}
-          <button className="text-xs text-gray-400 hover:text-gray-600" onClick={openAdmin} aria-label="Admin" title="Admin">
+          <button className="text-xs text-gray-600 hover:text-gray-700" onClick={openAdmin} aria-label="Admin" title="Admin">
             Admin
           </button>
         </div>
@@ -312,6 +311,7 @@ async function handleRegister(e) {
 
       {/* Hero Section (imported) */}
       <HeroSection eventStarted={eventStarted} />
+<div className="bg-gradient-to-b from-[#1E223D] to-[#1B3C6A]">
 
       {/* Fundraising Tracker (keep this part after Hero) */}
       <section className="max-w-6xl mx-auto px-4 pt-10 pb-6">
@@ -449,19 +449,20 @@ async function handleRegister(e) {
           </div>
         </section>
       )}
+</div>
 
       {/* Footer */}
-<footer className="border-t bg-white">
+<footer className="border-t border-gray-700/40 bg-[#141830]/95 text-gray-300">
   <div className="max-w-6xl mx-auto px-4 py-7 text-center text-sm text-gray-500">
     <div className="flex justify-center gap-4 mb-3">
       <a href="https://www.facebook.com/youthhomerizal" target="_blank" rel="noreferrer">
-        <img src="/icons/facebook.svg" alt="Facebook" className="w-6 h-6"/>
+        <img src="/icons/facebook.png" alt="Facebook" className="w-6 h-6"/>
       </a>
       <a href="https://www.instagram.com/youthhomerizal/" target="_blank" rel="noreferrer">
-        <img src="/icons/instagram.svg" alt="Instagram" className="w-6 h-6"/>
+        <img src="/icons/instagram.png" alt="Instagram" className="w-6 h-6"/>
       </a>
       <a href="https://tiktok.com/@youthhomerizal" target="_blank" rel="noreferrer">
-        <img src="/icons/tiktok.svg" alt="TikTok" className="w-6 h-6"/>
+        <img src="/icons/tiktok.png" alt="TikTok" className="w-6 h-6"/>
       </a>
     </div>
     {EVENT_TITLE} | by Feast Youth - Rizal District.<br />
