@@ -74,6 +74,18 @@ export default function HeroSection() {
           </a>
         </div>
       </div>
+            {/* Decorative V Shape at bottom */}
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
+        <svg
+          className="relative block w-full h-16"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+          viewBox="0 0 100 100"
+        >
+          <polygon fill="#1E223D" points="0,100 50,0 100,100" />
+        </svg>
+      </div>
+
     </section>
   );
 }
