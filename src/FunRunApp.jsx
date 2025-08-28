@@ -1,5 +1,5 @@
 // src/FunRunApp.jsx
-// Single-file React app for Youth Ministry Fun Run
+// Single-file React app Youth Ministry Fun Run
 // Features:
 // - Event info + FAQs
 // - Countdown timer
@@ -18,7 +18,7 @@ import HeroSection from "./components/HeroSection";
 // 0) EDIT THESE SETTINGS
 // ----------------------
 const EVENT_TITLE = "Youth Ministry Fun Run";
-const EVENT_DATE_LOCAL = "December 25, 2025 08:00"; // Local time
+const EVENT_DATE_LOCAL = "October 04, 2025 05:00"; // Local time
 const EVENT_TIMEZONE = "Rizal District";         // For display
 const FEEDBACK_FORM_URL = "https://forms.gle/PNAV985iPYEtvG5n6";
 
@@ -283,22 +283,15 @@ async function handleRegister(e) {
     setIsGenerating(false); // <-- stop loading regardless of success or error
   }
 }
-
-
-
-
-
-
-
   // ----------------------------
   // UI Sections
   // ----------------------------
   return (
     //overall bg color and text color of the website
-    <div className="min-h-screen bg-gradient-to-b from-black to-red-800 text-gray-800">
+    <div className="min-h-screen bg-gradient-to-b from-[#1E223D] to-[#1B3C6A] text-gray-800">
       {/* Top bar */}
       <header className="sticky top-0 z-20 bg-white/90 backdrop-blur border-b">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between">
           {/* Logo + Title */}
           <div className="flex items-center gap-3">
             {/* Logo image */}
@@ -336,7 +329,7 @@ async function handleRegister(e) {
 
             <div className="mt-3 h-3 rounded-full bg-gray-100 border overflow-hidden">
               <div
-                className={cx("h-full transition-all", percent >= 100 ? "bg-green-300" : "bg-green-600")}
+                className={cx("h-full transition-all", percent >= 100 ? "bg-[#F59124]" : "bg-[#F59124]")}
                 style={{ width: `${percent}%` }}
               />
             </div>
@@ -347,7 +340,6 @@ async function handleRegister(e) {
           </div>
         </div>
       </section>
-
 
       {/* Registration + FAQs */}
       {view === "home" && (
@@ -398,7 +390,7 @@ async function handleRegister(e) {
                 </div>
                   <button
                     type="submit"
-                    className="mt-2 inline-flex items-center justify-center rounded-xl bg-red-600 px-5 py-3 font-semibold text-white shadow hover:bg-red-700 disabled:opacity-60"
+                    className="mt-2 inline-flex items-center justify-center rounded-xl bg-[#F59124] px-5 py-3 font-semibold text-white shadow hover:bg-[#b16616] disabled:opacity-60"
                     disabled={isGenerating}
                   >
                     {isGenerating ? "Generating QR..." : "Generate my QR code"}
@@ -411,11 +403,16 @@ async function handleRegister(e) {
           <aside>
             <div className="bg-white border rounded-2xl shadow p-6">
               <h3 className="text-xl font-bold mb-4">FAQs</h3>
-              <Faq q="Where and when is the run?" a={`The run starts at 8:00 AM on ${eventDate.toLocaleDateString()} (${EVENT_TIMEZONE}). Check-in opens at 7:00 AM.`} />
-              <Faq q="How long are the routes?" a="We have a 3K and a 5K route. Walkers are welcome!" />
+              <Faq q="Where and when is the run?" a={`The run starts at 5:00 AM on ${eventDate.toLocaleDateString()} Marikina Heights. Check-in opens at 4:00 AM.`} />
+              <Faq q="How long are the routes?" a="We have a 3K and a 5K route. Maps will be posted here before the event. Walkers are welcome!" />
               <Faq q="Is there a registration fee?" a="Registration is Php 500. Donations are welcome through church channels. You may register through this website." />
+              <Faq q="What do I get when I register?" a="All runners get medals, race kits, snacks, a FUN run, and more!" />
+              <Faq q="Who can join the fun run?" a="All are welcome!" />
               <Faq q="What should I bring?" a="Comfortable running shoes, water bottle, and your phone with the QR code for fast check-in." />
-              <Faq q="Pwede pa mag dagdag ng tanong" a="OKAYYYY" />
+              <Faq q="Can I register on the day of event?" a="To ensure we have enough kits and medals, please register before the event via online or your local Rizal District Feast near you." />
+              <Faq q="What if I can't run the full distance?" a="No worries! You can walk, jog, or run at your own pace. The event is all about fun and community!" />
+              <Faq q="Is there a cut-off time?" a="The event officially ends at 9:00 AM, but you can finish your run at your own pace." />
+              <Faq q="Pwede pa mag dagdag ng tanong" a="inform niyo lang po ako if may ipapalagay kayo na tanong, nilagay ko lang muna usual na FAQs ng mga nasasalihan kong marathon" />
               <Faq q="Kumain na ba'ko?" a="hahahaha" />
               <Faq q="La na ko maisip na tanong" a="I surrender." />
               <Faq q="Gcash ko talaga yan ha :>" a="wag kalimutan palitan haha -marshall" />
@@ -455,7 +452,7 @@ async function handleRegister(e) {
 
       {/* Footer */}
 <footer className="border-t bg-white">
-  <div className="max-w-6xl mx-auto px-4 py-10 text-center text-sm text-gray-500">
+  <div className="max-w-6xl mx-auto px-4 py-7 text-center text-sm text-gray-500">
     <div className="flex justify-center gap-4 mb-3">
       <a href="https://www.facebook.com/youthhomerizal" target="_blank" rel="noreferrer">
         <img src="/icons/facebook.svg" alt="Facebook" className="w-6 h-6"/>
@@ -471,7 +468,6 @@ async function handleRegister(e) {
     © {new Date().getFullYear()} Marshnandez. All Rights Reserved.
   </div>
 </footer>
-
 
       {/* Admin Modal */}
       {adminOpen && (
@@ -552,6 +548,6 @@ function Faq({ q, a }) {
 // ----------------------------
 // To update and push online, type niyo lang to sa terminal :))
 //git add .
-//git commit -m "Update hero section text"
+//git commit -m "Update message here"
 //git push origin main
 // ----------------------------
