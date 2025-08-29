@@ -212,14 +212,14 @@ export default function FunRunApp() {
     }
   }
 
-// ----------------------------
-// Registration / QR generation + Firestore + Google Sheets
-// ----------------------------
+  // ----------------------------
+  // Registration / QR generation + Firestore persistence
+  // ----------------------------
 async function handleRegister(e) {
   e.preventDefault();
 
-  if (isGenerating) return;
-  setIsGenerating(true);
+  if (isGenerating) return; // Prevent double-clicks
+  setIsGenerating(true);    // Start loading
 
   try {
     if (!db) {
@@ -232,17 +232,11 @@ async function handleRegister(e) {
     for (const field of requiredFields) {
       if (!form[field]) {
         alert(`Please fill in ${field.replace(/([A-Z])/g, " $1")}.`);
-        setIsGenerating(false);
         return;
       }
     }
 
-    // 1️⃣ Generate a unique ID for this registration
-    const regId = `${Date.now()}-${form.fullName.replace(/\s+/g, "-")}`;
-
-    // 2️⃣ Build payload
     const payload = {
-      regId,  // <-- unique string to also be QR content
       fullName: form.fullName,
       email: form.email,
       age: Number(form.age) || form.age,
@@ -255,18 +249,19 @@ async function handleRegister(e) {
       event: EVENT_TITLE,
     };
 
-    // 3️⃣ Save to Firestore
-    const regRef = doc(db, "registrations", regId);
+    // 1️⃣ Save to Firestore
+    const regRef = doc(db, "registrations", `${Date.now()}-${form.fullName}`);
     await setDoc(regRef, payload);
 
-    // 4️⃣ Send to Google Sheets (as JSON)
+    // 2️⃣ Send to Google Sheets
     try {
+      const formBody = new URLSearchParams(payload).toString();
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbyoVfp6B7UQcXLEj4yUMVNEy5IokOFlcbHktWs02TRp2aLlbo5pYd_mKP4n287r6k9Q/exec",
+        "https://script.google.com/macros/s/AKfycbzMs00XxppnrLXx67eGhkEPCzY5TclxuPr-Joptf6E0eevJYrkTmvAcZ4WGsIH6zHE/exec",
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
+          headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+          body: formBody,
         }
       );
       const result = await response.json();
@@ -276,8 +271,8 @@ async function handleRegister(e) {
       console.error("Failed to send to Google Sheet", err);
     }
 
-    // 5️⃣ Generate QR code (just from regId)
-    const dataUrl = await QRCode.toDataURL(regId, { margin: 1, width: 256 });
+    // 3️⃣ Generate QR code locally
+    const dataUrl = await QRCode.toDataURL(JSON.stringify(payload), { margin: 1, width: 256 });
     setQrDataUrl(dataUrl);
     setView("qr");
 
@@ -285,10 +280,9 @@ async function handleRegister(e) {
     console.error(err);
     alert("Failed to register and generate QR code.");
   } finally {
-    setIsGenerating(false);
+    setIsGenerating(false); // <-- stop loading regardless of success or error
   }
 }
-
   // ----------------------------
   // UI Sections
   // ----------------------------
