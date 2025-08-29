@@ -272,7 +272,7 @@ async function handleRegister(e) {
     }
 
 // 3️⃣ Generate QR code locally (plain text format)
-const qrContent = `${form.fullName}${form.email}`;
+const qrContent = `${form.fullName} ${form.email} ${form.referenceNumber}`;
 const dataUrl = await QRCode.toDataURL(qrContent, { margin: 1, width: 256 });
 setQrDataUrl(dataUrl);
 setView("qr");
