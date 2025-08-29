@@ -257,7 +257,7 @@ async function handleRegister(e) {
     try {
       const formBody = new URLSearchParams(payload).toString();
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbzMs00XxppnrLXx67eGhkEPCzY5TclxuPr-Joptf6E0eevJYrkTmvAcZ4WGsIH6zHE/exec",
+        "https://script.google.com/macros/s/AKfycbxyekGfXYEjQrZ1y_vV-PxwBsjszFP4AXGornr_CYxhT_R-SlU4HAFPwjts9OKwQhAr/exec",
         {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
@@ -271,10 +271,12 @@ async function handleRegister(e) {
       console.error("Failed to send to Google Sheet", err);
     }
 
-    // 3️⃣ Generate QR code locally
-    const dataUrl = await QRCode.toDataURL(JSON.stringify(payload), { margin: 1, width: 256 });
-    setQrDataUrl(dataUrl);
-    setView("qr");
+// 3️⃣ Generate QR code locally (plain text format)
+const qrContent = `${form.fullName}${form.email}`;
+const dataUrl = await QRCode.toDataURL(qrContent, { margin: 1, width: 256 });
+setQrDataUrl(dataUrl);
+setView("qr");
+
 
   } catch (err) {
     console.error(err);
