@@ -212,14 +212,14 @@ export default function FunRunApp() {
     }
   }
 
-  // ----------------------------
-  // Registration / QR generation + Firestore persistence
-  // ----------------------------
+// ----------------------------
+// Registration / QR generation + Firestore + Google Sheets
+// ----------------------------
 async function handleRegister(e) {
   e.preventDefault();
 
-  if (isGenerating) return; // Prevent double-clicks
-  setIsGenerating(true);    // Start loading
+  if (isGenerating) return;
+  setIsGenerating(true);
 
   try {
     if (!db) {
@@ -232,11 +232,17 @@ async function handleRegister(e) {
     for (const field of requiredFields) {
       if (!form[field]) {
         alert(`Please fill in ${field.replace(/([A-Z])/g, " $1")}.`);
+        setIsGenerating(false);
         return;
       }
     }
 
+    // 1️⃣ Generate a unique ID for this registration
+    const regId = `${Date.now()}-${form.fullName.replace(/\s+/g, "-")}`;
+
+    // 2️⃣ Build payload
     const payload = {
+      regId,  // <-- unique string to also be QR content
       fullName: form.fullName,
       email: form.email,
       age: Number(form.age) || form.age,
@@ -249,19 +255,18 @@ async function handleRegister(e) {
       event: EVENT_TITLE,
     };
 
-    // 1️⃣ Save to Firestore
-    const regRef = doc(db, "registrations", `${Date.now()}-${form.fullName}`);
+    // 3️⃣ Save to Firestore
+    const regRef = doc(db, "registrations", regId);
     await setDoc(regRef, payload);
 
-    // 2️⃣ Send to Google Sheets
+    // 4️⃣ Send to Google Sheets (as JSON)
     try {
-      const formBody = new URLSearchParams(payload).toString();
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbyOvtuW-fYQtB7DyHVhx62Og5NyGTnvG2in9cPQuHlvGM1MtwyN85UoZlMZNwJs7PK0/exec",
+        "https://script.google.com/macros/s/AKfycbyWwl6Alab4FfC7ERLmIlNFyQNNfcI3c_jhrsz1viLho09Su6HV7IW8SDFL_nuwLvqA/exec",
         {
           method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
-          body: formBody,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
         }
       );
       const result = await response.json();
@@ -271,8 +276,8 @@ async function handleRegister(e) {
       console.error("Failed to send to Google Sheet", err);
     }
 
-    // 3️⃣ Generate QR code locally
-    const dataUrl = await QRCode.toDataURL(JSON.stringify(payload), { margin: 1, width: 256 });
+    // 5️⃣ Generate QR code (just from regId)
+    const dataUrl = await QRCode.toDataURL(regId, { margin: 1, width: 256 });
     setQrDataUrl(dataUrl);
     setView("qr");
 
@@ -280,9 +285,10 @@ async function handleRegister(e) {
     console.error(err);
     alert("Failed to register and generate QR code.");
   } finally {
-    setIsGenerating(false); // <-- stop loading regardless of success or error
+    setIsGenerating(false);
   }
 }
+
   // ----------------------------
   // UI Sections
   // ----------------------------
@@ -552,3 +558,24 @@ function Faq({ q, a }) {
 //git commit -m "Update message here"
 //git push origin main
 // ----------------------------
+
+
+//to add+ SNAP ON SCROLL effect on Gallery Section.
+//to add+ Parallax effect on Youth Rizal people Picture above Footer.
+//to add+ Lazy loading sa mga images ng Gallery Section.
+//to add+ frost/glass and glow effect sa mga buttons and cards. test lang kung maganda.
+//to add+ link to developer website on Marshnandez footer text.
+//to add+ hover effect sa mga images ng Gallery Section.
+//to add+ maps route section after FAQs. para sa route ng 3k at 5k.
+//to add+ QR Code to verify claimable lootbags sa event.
+//to add+ auto email send to registrant with QR code attachment. (need backend for this)
+// ----------------------------
+// SYSTEM FLOW
+// 1) User visits site, sees event info, countdown, fundraising tracker, FAQs.
+// 2) User fills out registration form, submits.
+// 3) Form data saved to Firestore and Google Sheets.
+// 4) QR code generated locally and displayed to user.
+// 5) User shows QR code at event for check-in.
+// 6) Admin can update fundraising total via PIN-protected modal.
+// ----------------------------
+// END OF FILE
