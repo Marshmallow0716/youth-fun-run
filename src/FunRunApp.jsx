@@ -257,7 +257,7 @@ async function handleRegister(e) {
     try {
       const formBody = new URLSearchParams(payload).toString();
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbxyekGfXYEjQrZ1y_vV-PxwBsjszFP4AXGornr_CYxhT_R-SlU4HAFPwjts9OKwQhAr/exec",
+        "https://script.google.com/macros/s/AKfycbw_EH6VLX0ZxXQC-xsGHR_r2SSmf2C4WjDTr2-Saj8w2vazvbgw7R8c-gXjKWd8xWfs/exec",
         {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
