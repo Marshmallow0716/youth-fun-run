@@ -262,7 +262,7 @@ async function handleRegister(e) {
     // 4️⃣ Send to Google Sheets (as JSON)
     try {
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbyPxBnNz4bSibpcFGQhw8iY89oPpNSvZ5kBNSu9MtBKAbUVrlX6hBNUsQJQGFMmKKux/exec",
+        "https://script.google.com/macros/s/AKfycbyoVfp6B7UQcXLEj4yUMVNEy5IokOFlcbHktWs02TRp2aLlbo5pYd_mKP4n287r6k9Q/exec",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
